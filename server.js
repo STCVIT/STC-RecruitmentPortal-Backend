@@ -8,10 +8,7 @@ const users = require('./routes/api/users');
 const orgs = require('./routes/api/orgs');
 const post = require('./question_route/posts');
 const app = express()
-app.use(cors({
-  origin: 'https://easy-recruit-build.herokuapp.com/',
-  optionsSuccessStatus: 200
-}))
+    app.use(cors())
 app.use(
     bodyParser.urlencoded({
         extended: false
