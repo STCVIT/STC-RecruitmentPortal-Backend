@@ -20,6 +20,7 @@ const testSchema = new Schema({
         unique: true,
         required: true
     },
+    start:{type:Boolean,default:false},
     MaxMarks: Number,
     perQuestionMarks: Number,
     negativeMarks: Number,

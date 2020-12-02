@@ -5,7 +5,7 @@ const [userVerify, clubVerify, testVerify] = require('../middleware/userVer');
 // const [userVerify, clubVerify] = require('../middleware/userVer');
 
 const orgVerify = require('../middleware/orgVer').verify
-const [addTest, addQuestion, checkResult,deleteQuestion, modifyQuestion,viewQuestions] = require('../handlers/orgTest');
+const [addTest, addQuestion, checkResult,deleteQuestion, modifyQuestion,viewQuestions,testStatus] = require('../handlers/orgTest');
 const [takeTest, submitTest] = require('../handlers/userPost');
 
 router.route('/users/takeTest').post(userVerify, testVerify, takeTest);
@@ -14,6 +14,7 @@ router.route("/users/submitTest").post(userVerify, testVerify, clubVerify, submi
 // router.route('/users/takeTest').post(userVerify,  takeTest);
 // router.route("/users/submitTest").post(userVerify, clubVerify, submitTest)
 router.route("/orgs/addTest").post(addTest)
+router.route("/orgs/changeTestStatus").post(testStatus)
 router.route("/orgs/checkResult").post((orgVerify), (checkResult))
 router.route("/orgs/viewQuestions").post((orgVerify), (viewQuestions))
 router.route("/orgs/questions/:id").post((orgVerify), (addQuestion))

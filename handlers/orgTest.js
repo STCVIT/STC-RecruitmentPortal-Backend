@@ -114,6 +114,7 @@ function deleteQuestion(req, res, next) {
                 }
             }
         })
+    
     }
 }
 function viewQuestions(req, res, next) {
@@ -144,10 +145,27 @@ function checkResult(req, res, next) {
     }
 }
 
+function testStatus(req,res,next){
+    if(req.body.testMode==null)next("test mode is null");
+    Test.findOne({ testId: req.body.testId }, (err, result) => {
+        if (err) next(err)
+        else {
+            if (!result) next("test with given testid is not found")
+            else {
+                if(req.body.testStatus==true)result.start=true
+                else result.start=false;
+                result.save().then((result) => res.send(result)).catch((err) => res.send(err))
+
+            }
+        }
+    })
+
+    
+}
 
 
 
 
 module.exports = [
-    addTest, addQuestion,checkResult,deleteQuestion,modifyQuestion,viewQuestions
+    addTest, addQuestion,checkResult,deleteQuestion,modifyQuestion,viewQuestions,testStatus
 ]

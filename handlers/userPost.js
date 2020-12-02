@@ -8,6 +8,7 @@ function takeTest(req, res, next) {
             else {
                 if (result == null) next("No such test or club code is present")
                 else {
+                    if(result.start==false)next("test not yet started please wait ")
                     //send the user question and options
                     var questionSet = [];
                     result.questions.forEach((question) => {
@@ -34,6 +35,7 @@ function submitTest(req, res, next) {
         if (err) next(err)
         else if (result == null) next("no such test exists (source Test)")
         else {
+            if(result.start==false)next("test has ended you cannot submit further")
             // iterate through answer array
             // and find answer values 
             let totalMarks = 0;
