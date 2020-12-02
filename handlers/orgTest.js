@@ -145,14 +145,14 @@ function checkResult(req, res, next) {
     }
 }
 
-function testStatus(req,res,next){
-    if(req.body.testStatus==null)next("test mode is null");
+function updateTestStatus(req,res,next){
+    if(req.body.updateTestStatus==null)next("test mode is null");
     Test.findOne({ testId: req.body.testId }, (err, result) => {
         if (err) next(err)
         else {
             if (result==null) next("test with given testid is not found")
             else {
-                if(req.body.testStatus==true)result.start=true
+                if(req.body.updateTestStatus==true)result.start=true
                 else result.start=false;
                 result.save().then((result) => res.send(result)).catch((err) => res.send(err))
 
@@ -162,10 +162,23 @@ function testStatus(req,res,next){
 
     
 }
+function getTestStatus(req,res,next){
+    
+    Test.findOne({ testId: req.body.testId }, (err, result) => {
+        if (err) next(err)
+        else {
+            if (result==null) next("test with given testid is not found")
+            else {
+                res.send(result.start)
+            }
+        }
+    })
 
+    
+}
 
 
 
 module.exports = [
-    addTest, addQuestion,checkResult,deleteQuestion,modifyQuestion,viewQuestions,testStatus
+    addTest, addQuestion,checkResult,deleteQuestion,modifyQuestion,viewQuestions,updateTestStatus
 ]
