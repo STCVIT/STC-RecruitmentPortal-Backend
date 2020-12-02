@@ -180,5 +180,5 @@ function getTestStatus(req,res,next){
 
 
 module.exports = [
-    addTest, addQuestion,checkResult,deleteQuestion,modifyQuestion,viewQuestions,updateTestStatus
+    addTest, addQuestion,checkResult,deleteQuestion,modifyQuestion,viewQuestions,updateTestStatus,getTestStatus
 ]
