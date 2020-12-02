@@ -14,7 +14,7 @@ router.route("/users/submitTest").post(userVerify, testVerify, clubVerify, submi
 // router.route('/users/takeTest').post(userVerify,  takeTest);
 // router.route("/users/submitTest").post(userVerify, clubVerify, submitTest)
 router.route("/orgs/addTest").post(addTest)
-router.route("/orgs/getTestStatus").get(getTestStatus)
+router.route("/orgs/getTestStatus").post(getTestStatus)
 router.route("/orgs/updateTestStatus").post(updateTestStatus)
 router.route("/orgs/checkResult").post((orgVerify), (checkResult))
 router.route("/orgs/viewQuestions").post((orgVerify), (viewQuestions))
