@@ -146,11 +146,11 @@ function checkResult(req, res, next) {
 }
 
 function testStatus(req,res,next){
-    if(req.body.testMode==null)next("test mode is null");
+    if(req.body.testStatus==null)next("test mode is null");
     Test.findOne({ testId: req.body.testId }, (err, result) => {
         if (err) next(err)
         else {
-            if (!result) next("test with given testid is not found")
+            if (result==null) next("test with given testid is not found")
             else {
                 if(req.body.testStatus==true)result.start=true
                 else result.start=false;
