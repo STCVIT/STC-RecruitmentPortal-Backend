@@ -35,7 +35,10 @@ function submitTest(req, res, next) {
         if (err) next(err)
         else if (result == null) next("no such test exists (source Test)")
         else {
-            if(result.start==false)next("test has ended you cannot submit further")
+            if (result.start == false) {
+                res.send({ error: 1 })
+                return
+            }
             // iterate through answer array
             // and find answer values 
             let totalMarks = 0;
@@ -78,7 +81,7 @@ function submitTest(req, res, next) {
                     else result1.usersScores.push(newUser)
                     console.log(result1)
                     result1.save()
-                        .then(() => res.send("result1 saved "))
+                        .then(() => res.send({ error: 0 }))
                         .catch((err) => next(err))
                 }
 
