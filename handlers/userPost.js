@@ -6,9 +6,15 @@ function takeTest(req, res, next) {
         Test.findOne({ testId: req.body.testId, clubCode: req.body.clubCode }, (err, result) => {
             if (err) next(err)
             else {
-                if (result == null) next("No such test or club code is present")
+                if (result == null) {
+                    res.send({ error: 2 })
+                    return
+                }
                 else {
-                    if(result.start==false)next("test not yet started please wait ")
+                    if (result.start == false) {
+                        res.send({ error: 1 })
+                        return
+                    }
                     //send the user question and options
                     var questionSet = [];
                     result.questions.forEach((question) => {

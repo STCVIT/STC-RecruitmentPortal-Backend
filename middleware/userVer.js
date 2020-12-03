@@ -34,7 +34,10 @@ function testVerify(req, res, next) {
     OrgTest.findOne({ testId: req.body.testId }, (err, result) => {
         if (err) next(err)
         else {
-            if (result == null) next("testID doesnot exists")
+            if (result == null) {
+                res.send({ error: 2 })
+                return
+            }
             else {
                 // check if user already attempted
                 let found = false;
