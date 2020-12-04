@@ -22,7 +22,7 @@ router.post("/register", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  User.findOne({ regNo: req.body.regNo }).then(user => {
+  User.findOne({ regNo: req.body.regNo,testId:req.body.testId }).then(user => {
     if (user) {
       return res.status(400).json({ regNo: "Registration No. already exists" });
     } else {
