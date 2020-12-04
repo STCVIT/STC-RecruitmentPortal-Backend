@@ -64,9 +64,9 @@ router.post("/login", (req, res) => {
 
   const regNo = req.body.regNo;
   const password = req.body.password;
-
+  const testId=req.body.testId;
   // Find user by email
-  User.findOne({ regNo }).then(user => {
+  User.findOne({ regNo,testId }).then(user => {
     // Check if user exists
     if (!user) {
       return res.status(404).json({ regNoNotFound: "Registration No. not found" });
