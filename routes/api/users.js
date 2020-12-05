@@ -23,7 +23,8 @@ router.post("/register", (req, res) => {
   }
 
   User.findOne({ regNo: req.body.regNo,testId:req.body.testId,email:req.body.email }).then(user => {
-    if (user) {
+    console.log(user)
+    if (user!=null) {
       return res.status(400).json({ regNo: "Registration No. already exists" });
     } else {
       const newUser = new User({

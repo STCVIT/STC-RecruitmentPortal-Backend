@@ -17,7 +17,7 @@ app.use(
 app.use(bodyParser.json())
 
 const db = require('./config/keys').mongoURI;
-
+mongoose.set('useCreateIndex', true);
 mongoose
     .connect(db,
         {

@@ -1,0 +1,14 @@
+POST http://localhost:5000/api/users/register/  HTTP/1.1
+Content-Type: application/json
+
+{
+        "name": "PANKAJ",
+        "regNo": "1234",
+        "mobileNo": "7089212082",
+        "blockName": "BSD",
+        "roomNo": "204",
+        "clubCode": "1000",
+        "email": "rahuhhlyadav@gmail.com",
+        "password": "123456",
+        "testId":"100"
+}

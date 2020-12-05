@@ -21,7 +21,7 @@ const UserSchema = new Schema({
   },
   mobileNo: {
     type: Number,
-    required: true
+    required: true,
   },
   blockName: {
     type: String,
@@ -36,7 +36,8 @@ const UserSchema = new Schema({
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique:false
   },
   password: {
     type: String,
