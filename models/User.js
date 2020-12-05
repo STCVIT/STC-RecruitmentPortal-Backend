@@ -52,7 +52,11 @@ const UserSchema = new Schema({
     type:Number
   }
 });
+
+UserSchema.index({ name: 1, regNo: -1,email:1,testId:1,clubCode:-1 });
+
 const UserTestScores = mongoose.model("UserTestScores", userTestScoreSchema);
+
 
 const User = mongoose.model("users", UserSchema);
 module.exports = {

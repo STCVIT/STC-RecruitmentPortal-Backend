@@ -7,8 +7,8 @@ Content-Type: application/json
         "mobileNo": "7089212082",
         "blockName": "BSD",
         "roomNo": "204",
-        "clubCode": "1000",
+        "clubCode": "1234",
         "email": "rahuhhlyadav@gmail.com",
         "password": "123456",
-        "testId":"100"
+        "testId":"1234"
 }
