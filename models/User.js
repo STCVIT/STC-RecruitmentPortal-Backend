@@ -15,7 +15,7 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  regNo: {
+  regNo: {  
     type: String,
     required: true
   },
