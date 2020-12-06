@@ -8,6 +8,7 @@ module.exports = function validateLoginInput(data) {
   data.regNo = !isEmpty(data.regNo) ? data.regNo : "";
 
   data.password = !isEmpty(data.password) ? data.password : "";
+  data.testId = !isEmpty(data.testId) ? data.testId : "";
 
   // Registration No. checks
   if (Validator.isEmpty(data.regNo)) {
@@ -16,6 +17,9 @@ module.exports = function validateLoginInput(data) {
   // Password checks
   if (Validator.isEmpty(data.password)) {
     errors.password = "Password field is required";
+  }
+  if (Validator.isEmpty(data.testId)) {
+    errors.testId = "Test ID is required"
   }
 
   return {

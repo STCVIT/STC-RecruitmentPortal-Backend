@@ -12,7 +12,7 @@ const questionSchema = new Schema({
 
 const testSchema = new Schema({
     clubCode: {
-        type: Number,
+        type: String,
         required: true
     },
     testId: {

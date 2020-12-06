@@ -86,7 +86,7 @@ router.post("/login", (req, res) => {
   User.findOne({ regNo,testId }).then(user => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ regNoNotFound: "Registration No. not found" });
+      return res.status(404).json({ regNoNotFound: "Incorrect credential combination", testidIncorrect: "Please check & try again" });
     }
 
     // Check password
