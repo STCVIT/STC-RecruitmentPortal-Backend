@@ -18,24 +18,30 @@ router.post('/register', (req, res) => {
         if (org) {
             return res.status(400).json({ email: "Organisation email already exists" })
         } else {
-            const newOrg = new Org({
-                clubName: req.body.clubName,
-                clubCode: req.body.clubCode,
-                email: req.body.email,
-                password: req.body.password,
-                mobileNo: req.body.mobileNo,
-                extras: req.body.extras,
-                testId:req.body.testId
-            });
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(newOrg.password, salt, (err, hash) => {
-                    if (err) throw errl
-                    newOrg.password = hash;
-                    newOrg
-                        .save()
-                        .then(org => res.json(org));
-                })
-            })
+            if (Org.findOne({ clubCode: req.body.clubCode, testId: req.body.testId }, (err, result) => {
+                if (result) {
+                    return res.status(400).json({ testId: "The test ID combination already exists for this club code.Please select another test ID & club code combination." })
+                } else {
+                    const newOrg = new Org({
+                        clubName: req.body.clubName,
+                        clubCode: req.body.clubCode,
+                        email: req.body.email,
+                        password: req.body.password,
+                        mobileNo: req.body.mobileNo,
+                        extras: req.body.extras,
+                        testId: req.body.testId
+                    });
+                    bcrypt.genSalt(10, (err, salt) => {
+                        bcrypt.hash(newOrg.password, salt, (err, hash) => {
+                            if (err) throw errl
+                            newOrg.password = hash;
+                            newOrg
+                                .save()
+                                .then(org => res.json(org));
+                        });
+                    });
+                }
+            }));            
         }
     });
 
