@@ -6,8 +6,10 @@ const keys = require("../../config/keys");
 
 const validateOrgRegister = require('../../validation/org/register');
 const validateOrgLogin = require('../../validation/org/login');
+const Test = require("../../models/Test").Test;
 
 const Org = require('../../models/Orgs').Org;
+const OrgTests = require('../../models/Orgs').orgTests
 
 router.post('/register', (req, res) => {
     const { errors, isValid } = validateOrgRegister(req.body);
@@ -18,24 +20,55 @@ router.post('/register', (req, res) => {
         if (org) {
             return res.status(400).json({ email: "Organisation email already exists" })
         } else {
-            const newOrg = new Org({
-                clubName: req.body.clubName,
-                clubCode: req.body.clubCode,
-                email: req.body.email,
-                password: req.body.password,
-                mobileNo: req.body.mobileNo,
-                extras: req.body.extras,
-                testId: req.body.testId
-            });
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(newOrg.password, salt, (err, hash) => {
-                    if (err) throw errl
-                    newOrg.password = hash;
-                    newOrg
-                        .save()
-                        .then(org => res.json(org));
-                })
-            })
+            if (Org.findOne({ clubCode: req.body.clubCode, testId: req.body.testId }, (err, result) => {
+                if (result) {
+                    return res.status(400).json({ testId: "The test ID combination already exists for this club code.Please select another test ID & club code combination." })
+                } else {
+                    const newOrg = new Org({
+                        clubName: req.body.clubName,
+                        clubCode: req.body.clubCode,
+                        email: req.body.email,
+                        password: req.body.password,
+                        mobileNo: req.body.mobileNo,
+                        extras: req.body.extras,
+                        testId: req.body.testId
+                    });
+                    bcrypt.genSalt(10, (err, salt) => {
+                        bcrypt.hash(newOrg.password, salt, (err, hash) => {
+                            if (err) throw errl
+                            newOrg.password = hash;
+
+                            Test.findOne({ testId: req.body.testId }, (err, result) => {
+                                if (err) res.status(400).json({ err: "Error occured" })
+                                else {
+
+                                    if (result == null) {
+
+                                        // create the test
+                                        var OrgTest = new OrgTests({ testId: req.body.testId, clubCode: req.body.clubCode, start: false, userScores: [] })
+                                        var test = new Test({ testId: req.body.testId, clubCode: req.body.clubCode })
+                                        Promise.all([newOrg.save(), OrgTest.save(), test.save()])
+                                            .then((result) => { res.send(test) })
+                                            .catch((err) => res.send(err))
+                                    }
+                                    else {
+                                        if (result == null)
+                                            next({ err: 'No such test ID exists' })
+                                        else {
+                                            return res.status(400).json({ testId: "The test ID already exists.Please try different one" })
+                                        }
+                                    }
+                                }
+                            })
+                            // newOrg
+                            //     .save()
+                            //     .then(org => res.json(org))
+                            //     .catch(err => res.send(err))
+                        });
+                    });
+
+                }
+            }));
         }
     });
 
