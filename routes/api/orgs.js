@@ -75,7 +75,7 @@ router.post('/login', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const testId=req.body.testId
-    Org.findOne({ email,password,testId }).then(org => {
+    Org.findOne({ email, testId }).then(org => {
 
         if (!org) {
             return res.status(400).json({ email: 'Email Id not found' });

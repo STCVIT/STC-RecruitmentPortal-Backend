@@ -7,7 +7,7 @@ module.exports = function validateOrgLogin(data) {
 
     data.email = !isEmpty(data.email) ? data.email : "";
     data.password = !isEmpty(data.password) ? data.password : "";
-
+    data.testId_org = !isEmpty(data.testId_org) ? data.testId_org : "";
 
     // email check
     if (Validator.isEmpty(data.email)) {
@@ -20,6 +20,9 @@ module.exports = function validateOrgLogin(data) {
 
     if (Validator.isEmpty(data.password)) {
         errors.password = "Password field is empty";
+    }
+    if (Validator.isEmpty(data.testId)) {
+        errors.testId_org = "Test ID is empty";
     }
 
     return {
