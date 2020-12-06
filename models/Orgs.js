@@ -22,7 +22,8 @@ const orgTestsSchema = new Schema({
 const orgSchema = new Schema({
     clubCode: {
         type: String,
-        required: true
+        required: true,
+        uniqe:false
     },
     clubName: {
         type: String,
@@ -30,7 +31,8 @@ const orgSchema = new Schema({
     },
     email: {
         type: String,
-        required:true
+        required:true,
+        unique:false,
     },
     mobileNo: Number,
     expectedCandidates: {
@@ -44,12 +46,15 @@ const orgSchema = new Schema({
     },
     testId: {
         type: Number,
-        required:true
+        required:true,
+        unique:false,
     }
 });
 
 const userScore = Mongoose.model('userScore', userScoreSchema)
 const orgTests = Mongoose.model('orgTests', orgTestsSchema);
+orgSchema.index({  clubCode:1,email:-1,testId:1 });
+
 const Org = Mongoose.model("Org", orgSchema);
 module.exports = {
     Org, userScore, orgTests

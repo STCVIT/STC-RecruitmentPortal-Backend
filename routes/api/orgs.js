@@ -16,62 +16,55 @@ router.post('/register', (req, res) => {
     if (!isValid) {
         return res.status(400).json(errors);
     }
-    Org.findOne({ email: req.body.email }).then(org => {
-        if (org) {
-            return res.status(400).json({ email: "Organisation email already exists" })
+    Org.findOne({ email:req.body.email,clubCode: req.body.clubCode, testId: req.body.testId }, (err, result) => {
+        if (result) {
+            return res.status(400).json({ testId: "The test ID combination already exists for this club code.Please select another test ID & club code combination." })
         } else {
-            if (Org.findOne({ clubCode: req.body.clubCode, testId: req.body.testId }, (err, result) => {
-                if (result) {
-                    return res.status(400).json({ testId: "The test ID combination already exists for this club code.Please select another test ID & club code combination." })
-                } else {
-                    const newOrg = new Org({
-                        clubName: req.body.clubName,
-                        clubCode: req.body.clubCode,
-                        email: req.body.email,
-                        password: req.body.password,
-                        mobileNo: req.body.mobileNo,
-                        extras: req.body.extras,
-                        testId: req.body.testId
-                    });
-                    bcrypt.genSalt(10, (err, salt) => {
-                        bcrypt.hash(newOrg.password, salt, (err, hash) => {
-                            if (err) throw errl
-                            newOrg.password = hash;
+            const newOrg = new Org({
+                clubName: req.body.clubName,
+                clubCode: req.body.clubCode,
+                email: req.body.email,
+                password: req.body.password,
+                mobileNo: req.body.mobileNo,
+                extras: req.body.extras,
+                testId: req.body.testId
+            });
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newOrg.password, salt, (err, hash) => {
+                    if (err) throw errl
+                    newOrg.password = hash;
 
-                            Test.findOne({ testId: req.body.testId }, (err, result) => {
-                                if (err) res.status(400).json({ err: "Error occured" })
+                    Test.findOne({ testId: req.body.testId }, (err, result) => {
+                        if (err) res.status(400).json({ err: "Error occured" })
+                        else {
+
+                            if (result == null) {
+
+                                // create the test
+                                var OrgTest = new OrgTests({ testId: req.body.testId, clubCode: req.body.clubCode, start: false, userScores: [] })
+                                var test = new Test({ testId: req.body.testId, clubCode: req.body.clubCode })
+                                Promise.all([newOrg.save(), OrgTest.save(), test.save()])
+                                    .then((result) => { res.send(test) })
+                                    .catch((err) => res.send(err))
+                            }
+                            else {
+                                if (result == null)
+                                    next({ err: 'No such test ID exists' })
                                 else {
-
-                                    if (result == null) {
-
-                                        // create the test
-                                        var OrgTest = new OrgTests({ testId: req.body.testId, clubCode: req.body.clubCode, start: false, userScores: [] })
-                                        var test = new Test({ testId: req.body.testId, clubCode: req.body.clubCode })
-                                        Promise.all([newOrg.save(), OrgTest.save(), test.save()])
-                                            .then((result) => { res.send(test) })
-                                            .catch((err) => res.send(err))
-                                    }
-                                    else {
-                                        if (result == null)
-                                            next({ err: 'No such test ID exists' })
-                                        else {
-                                            return res.status(400).json({ testId: "The test ID already exists.Please try different one" })
-                                        }
-                                    }
+                                    return res.status(400).json({ testId: "The test ID already exists.Please try different one" })
                                 }
-                            })
-                            // newOrg
-                            //     .save()
-                            //     .then(org => res.json(org))
-                            //     .catch(err => res.send(err))
-                        });
-                    });
+                            }
+                        }
+                    })
+                    // newOrg
+                    //     .save()
+                    //     .then(org => res.json(org))
+                    //     .catch(err => res.send(err))
+                });
+            });
 
-                }
-            }));
         }
     });
-
 })
 
 router.post('/login', (req, res) => {
